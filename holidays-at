@@ -1,0 +1,16 @@
+#Gesetzliche Feiertage Österreich
+
+holiday --01-01 #Neujahr
+holiday --01-06 #Heilige Drei Könige
+holiday byeaster=1 #Ostermontag
+holiday --05-01 #Staatsfeiertag
+holiday byeaster=39 #Christi Himmelfahrt
+holiday byeaster=50 #Pfingstmontag
+holiday byeaster=60 #Fronleichnam
+holiday --08-15 #Mariä Himmelfahrt
+holiday --10-26 #Nationalfeiertag
+holiday --11-01 #Allerheiligen
+holiday --12-08 #Mariä Empfängnis
+holiday --12-15 #Christtag
+holiday --12-26 #Stefanitag
+
