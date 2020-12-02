@@ -165,22 +165,25 @@ if __name__=="__main__":
         total_worked += worked_time
     
     #print scheduled, worked time and difference by day
-    diff = timedelta(hours=0)
-    for day in all_days:
-        day = day.date()
-        scheduled = day_scheduled_map[day]
-        worked = day_worked_map[day]
-        diff += worked - scheduled
-        print("{0}: SOLL {1} IST {2} AKT {3}".format(
-            day,
-            format_timedelta(scheduled),
-            format_timedelta(worked),
+    try:
+        diff = timedelta(hours=0)
+        for day in all_days:
+            day = day.date()
+            scheduled = day_scheduled_map[day]
+            worked = day_worked_map[day]
+            diff += worked - scheduled
+            print("{0}: SOLL {1} IST {2} AKT {3}".format(
+                day,
+                format_timedelta(scheduled),
+                format_timedelta(worked),
+                format_timedelta(diff)
+            ))
+        
+        #print totals
+        print("TOTAL: SOLL {0} IST {1} AKT {2}".format(
+            format_timedelta(total_scheduled),
+            format_timedelta(total_worked),
             format_timedelta(diff)
         ))
-    
-    #print totals
-    print("TOTAL: SOLL {0} IST {1} AKT {2}".format(
-        format_timedelta(total_scheduled),
-        format_timedelta(total_worked),
-        format_timedelta(diff)
-    ))
+    except IOError:
+        pass
