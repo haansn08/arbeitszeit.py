@@ -158,10 +158,14 @@ if __name__=="__main__":
     
     #calculate worked time
     total_worked = timedelta(hours=0)
+    out_of_schedule_worked = timedelta(hours=0)
     for work_start, work_end, lunch in work_times:
         day = work_start.date()
         worked_time = (work_end - work_start) - lunch
-        day_worked_map[day] += worked_time
+        if work_start < first_work_day or last_work_day < work_start:
+            out_of_schedule_worked += worked_time
+        else:
+            day_worked_map[day] += worked_time
         total_worked += worked_time
     
     #print scheduled, worked time and difference by day
@@ -178,6 +182,12 @@ if __name__=="__main__":
                 format_timedelta(worked),
                 format_timedelta(diff)
             ))
+
+        if out_of_schedule_worked.total_seconds() > 0:
+            print("OUT OF SCHEDULE TIME: {0}".format(
+                format_timedelta(out_of_schedule_worked)
+            ))
+            diff += out_of_schedule_worked
         
         #print totals
         print("TOTAL: SOLL {0} IST {1} AKT {2}".format(
