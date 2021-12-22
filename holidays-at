@@ -14,3 +14,7 @@ holiday --12-08 #Mariä Empfängnis
 holiday --12-15 #Christtag
 holiday --12-26 #Stefanitag
 
+# Feiertage AAU
+
+holiday --12-24 #Weihnachten
+holiday --12-31 #Silvester
