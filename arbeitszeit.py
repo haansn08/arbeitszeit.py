@@ -109,6 +109,7 @@ def process_command(line, linenumber):
         "schedule": schedule,
         "holiday": holiday,
         "vacation": vacation,
+        "sick": vacation,
         "work": work,
         "dt": lambda x: print(parse_dt(x))
     }

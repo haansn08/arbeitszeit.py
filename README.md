@@ -74,7 +74,7 @@ Pull requests for other countries are welcome.
 * `holiday --05-01 #Staatsfeiertag`
 * `holiday byeaster=50 #Monday after Pentecost`
 
-### `vacation <interval>`
+### `vacation <interval>` or `sick <interval>`
 When you take off work. No working hours will be scheduled for the days in `interval`.
 * `vacation 08-08/08-14`
 * `vacation 2020-06-16/2020-07-09`
