@@ -134,10 +134,11 @@ if __name__=="__main__":
             process_command(line, linenumber)
         except Exception as e:
             print("ERROR: On line {0}: {1}".format(linenumber, str(e)), file=sys.stderr)
+            print("Offending line was: \"{0}\"".format(line[:-1]), file=sys.stderr)
             sys.exit(1)
     
     if len(working_schedules) == 0:
-        print("ERROR: No working schedule found")
+        print("ERROR: No work schedule given")
         sys.exit(1)
 
     all_days = rrule(DAILY, first_work_day, until=last_work_day)
