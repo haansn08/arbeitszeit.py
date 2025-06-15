@@ -23,7 +23,7 @@ def parse_interval(interval_str):
         raise ValueError("Interval \"{0}\" ends before its starting time.".format(interval_str))
     return interval_start, interval_end
 
-period_regex = re.compile("PT((?P<hours>\d+)H)?((?P<minutes>\d+)M)?")
+period_regex = re.compile(r"PT((?P<hours>\d+)H)?((?P<minutes>\d+)M)?")
 def parse_period(period_string):
     if not period_string:
         return timedelta(hours=0)
