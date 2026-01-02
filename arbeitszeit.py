@@ -46,29 +46,28 @@ def schedule(amount, valid=None, byweekday="MO,TU,WE,TH,FR"):
     first_work_day, last_work_day = min(first_work_day, valid_from), max(last_work_day, valid_to)
     rr = rrule(DAILY, dtstart=valid_from, until=valid_to, byweekday=byweekday)
     working_schedules.append((amount, rr))
+
 def work_days():
     for amount, rr in working_schedules:
         for working_day in rr:
             yield working_day, amount
 
-holiday_rrules = []
+holiday_rrules = rruleset()
 def holiday(date, byeaster=None):
+    #rrule calculations do not work backwards
+    #dtstart must be some date in the past
     if not date:
-        #Easter calculation does not work backwards, maybe bug in dateutil?
-        #Set start date to some date in the past
-        date = parse_dt("2018-01-01")
+        date = datetime(2018, 1, 1)
     else:
-        date = parse_dt(date)
+        date = parse_dt(date, default=datetime(2018, 1, 1))
     if byeaster != None:
         byeaster = int(byeaster)
     
-    rr = rrule(YEARLY, date, byeaster=byeaster)
-    holiday_rrules.append(rr)
+    rr = rrule(YEARLY, dtstart=date, byeaster=byeaster)
+    holiday_rrules.rrule(rr)
+
 def is_holiday(day):
-    return any(map(
-        lambda rr: len(rr.between(day, day, inc=True)) > 0,
-        holiday_rrules
-    ))
+    return len(holiday_rrules.between(day, day, inc=True)) > 0
 
 vacations = []
 def vacation(span):
