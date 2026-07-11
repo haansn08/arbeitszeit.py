@@ -5,6 +5,7 @@ import dateutil.parser
 from dateutil.rrule import *
 from itertools import chain
 from datetime import *
+import argparse
 
 default_dt = None
 def parse_dt(date_str, default=None):
@@ -127,7 +128,13 @@ def format_timedelta(td):
     return "{0}{1:0>2}:{2:0>2}".format(sign, total_hours, minutes)
 
 if __name__=="__main__":
-    input_files = ([open(f) for f in sys.argv[1:]] or [sys.stdin]) #read from stdin if no files given
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument("input_files", nargs="*", help="Files from which commands are read. Defaults to stdin.")
+    argparser.add_argument("--from", help="Only print days starting with this date", dest="from_date")
+    argparser.add_argument("--until", help="Only print days until this date", dest="until_date")
+    args = argparser.parse_args()
+
+    input_files = ([open(f) for f in args.input_files] or [sys.stdin])
     for linenumber, line in enumerate(chain(*input_files), 1):
         try:
             process_command(line, linenumber)
@@ -139,6 +146,9 @@ if __name__=="__main__":
     if len(working_schedules) == 0:
         print("ERROR: No work schedule given")
         sys.exit(1)
+
+    print_from_day = (parse_dt(args.from_date) if args.from_date else first_work_day).date()
+    print_until_day = (parse_dt(args.until_date) if args.until_date else last_work_day).date()
 
     all_days = rrule(DAILY, first_work_day, until=last_work_day)
     day_scheduled_map = {}
@@ -177,12 +187,13 @@ if __name__=="__main__":
             scheduled = day_scheduled_map[day]
             worked = day_worked_map[day]
             diff += worked - scheduled
-            print("{0}: SOLL {1} IST {2} AKT {3}".format(
-                day,
-                format_timedelta(scheduled),
-                format_timedelta(worked),
-                format_timedelta(diff)
-            ))
+            if print_from_day <= day and day <= print_until_day:
+                print("{0}: SOLL {1} IST {2} AKT {3}".format(
+                    day,
+                    format_timedelta(scheduled),
+                    format_timedelta(worked),
+                    format_timedelta(diff)
+                ))
 
         if out_of_schedule_worked.total_seconds() > 0:
             print("OUT OF SCHEDULE TIME: {0}".format(
